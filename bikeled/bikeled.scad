@@ -1,9 +1,9 @@
-lx = 85;
-ly = 35;
-lz = 20;
+lx = 68;
+ly = 30;
+lz = 22;
 
 ledRadius = 5 / 2;
-thickness = 5;
+thickness = 2.5;
 ledSpacing = 23.5 / 3;
 
 module top() {
@@ -12,6 +12,14 @@ module top() {
 
 	translate([thickness / 2, thickness / 2, thickness])
 	cube([lx + thickness, ly + thickness, thickness / 2]);
+
+	difference() {
+		translate([thickness, thickness, thickness * 1.5])
+		cube([lx, ly, thickness * 1.5]);
+
+		translate([thickness * 1.5, thickness * 1.5, thickness * 1.5])
+		cube([lx - thickness, ly - thickness, thickness * 2]);
+	}
 
 }
 
@@ -26,17 +34,14 @@ module bottom() {
 		translate([thickness / 2, thickness / 2, lz + thickness / 2 + 1])
 		cube([lx + thickness, ly + thickness, thickness / 2 + 1]);
 
+		translate([thickness + lx - 54, thickness, thickness + 3])
+		board();
 
-		//leds();
-/*
-		for(x = [-1 : 3]) {
-			translate([lx + thickness / 2, ly / 2 + (ledRadius * 4 * x), lz / 2 + ledRadius])
-			rotate(a = [0, 90, 0])
-			cylinder(h = thickness * 2, r = ledRadius);
-		}*/
+		translate([lx, ly / 4 + thickness, lz / 2])
+		rotate([0, 90, 0])
+		cylinder(r = 4.8 / 2, h = 10);
 	}
 
-//	cube(
 }
 
 module leds() {
@@ -54,19 +59,44 @@ module board() {
 		cylinder(r = ledRadius, h = 8.5);
 	}
 
-	translate([43, 3.5, -4.2])
-	cube([6, 6, 4.2]);
-
-	translate([43, 3.5, -4.2])
-	cylinder(r = 3.5 / 2, h = 6);
-
+	translate([43, 3.5, -14.2])
+	cube([6, 6, 14.2]);
 }
 
 //top();
 //bottom();
 //leds();
 
-board();
+/*
+difference() {
 
-//% translate([0, 0, lz + thickness * 3]) mirror([0, 0, 1]) top();
+	top();
+
+	linear_extrude(height = 10)
+	scale([0.07, 0.07, 0.07])
+	translate([100, -350, 0])
+	import("../hello.dxf");
+
+}
+*/
+
+difference() {
+	top();
+
+	translate([4, 20, -1])
+	linear_extrude(height = 2)
+	mirror([0, 1, 0])
+	scale([0.3, 0.3, 0.3])
+	import("susana1.dxf");
+
+	translate([30, 33, -1])
+	linear_extrude(height = 2)
+	mirror([0, 1, 0])
+	scale([0.15, 0.15, 0.15])
+	import("../tavaubry.dxf");
+}
+
+
+
+//% bottom();
 
