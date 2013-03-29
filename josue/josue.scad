@@ -4,9 +4,21 @@ $fn = 20;
 module axis() {
 
 	difference() {
-		cylinder(r = 6, h = 5.7);
-		translate([0, 0, -0.1])
-		cylinder(r = 4.3 / 2, h = 6);
+		union() {
+			cylinder(r = 6, h = 5.7);
+
+			for(i = [0 : 2]) {
+				translate([0, 0, 5.7 + 1.1])
+				rotate([0, 0, i * 60])
+				cube([12, 0.35, 2.2], center = true);
+			}
+
+			translate([0, 0, 5.7 + 1.2])
+			cylinder(r = 6, h = 1);
+		}
+
+		translate([0, 0, -1])
+		cylinder(r = 4.3 / 2, h = 12);
 
 		for(i = [0 : 2]) {
 			translate([0, 0, 2])
@@ -14,9 +26,6 @@ module axis() {
 			cube([6.9, 3.9, 4.1], center = true);
 		}
 	}
-
-	translate([4.3 / 2, -0.35 / 2, 5.7])
-# 	cube([6, 0.35, 2.2]);
 }
 
 module frame() {
@@ -101,8 +110,23 @@ module fix() {
 
 }
 
+//mirror([0, 0, 1])
+//fix();
+
+difference() {
+	linear_extrude(height = 5.7)
+	import("model_print.dxf");
+
+	translate([4.4, 33.9, 2.2 - 5.7])
+	cylinder(r = 7.5, h = 5.7);
+}
+
+translate([4.4, 33.9, 5.7])
+translate([0, 0, 2.2])
 mirror([0, 0, 1])
-fix();
+axis();
+
+
 
 
 
